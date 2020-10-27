@@ -1,4 +1,4 @@
-import {useState} from "react"
+import {FormEvent, useState} from "react"
 import axios from "axios";
 import styled from "styled-components";
 
@@ -15,7 +15,7 @@ export default function Home() {
 
   const [value, setValue] = useState('')
 
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(value);
     const res = await axios({
