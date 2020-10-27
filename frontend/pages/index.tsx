@@ -11,20 +11,34 @@ const Center = styled.div`
  height: 100vh;
 `;
 
-const StyledH1 = styled.h1`
+const StyledH1 = styled.h1<{error: string}>`
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
   top: 20px;
+  @keyframes light {
+    from {
+      color: black;
+    }
+    to {
+      color: red;
+    }
+  }
+  ${({error}) => error  ? 
+    "animation: light 0.2s linear infinite;"
+: ""}
 `;
 export default function Home() {
 
   const [value, setValue] = useState('')
-  const [response, setResponse] = useState()
+  const [response, setResponse] = useState<string>()
+  const [error, setError] = useState<boolean>(false)
+  
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(value);
-    const res = await axios({
+    
+    try{const res = await axios({
       method: 'post',
       url: 'http://localhost:8080',
       data: {
@@ -33,11 +47,16 @@ export default function Home() {
     });
     setResponse(res.data.value)
   }
+  catch(err){
+    setResponse("Could not connect to server");
+    setError(true)
+  }
+  }
   
 
   return (
     <>
-    {response && <StyledH1>{response}</StyledH1>}
+    {response && <StyledH1 error={error}>{response}</StyledH1>}
 
     <Center>
 
