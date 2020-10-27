@@ -1,9 +1,10 @@
 package handlers
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"github.com/vSterlin/images/backend/data"
 )
 
 type Some struct {
@@ -11,12 +12,9 @@ type Some struct {
 }
 
 func PostHandler(w http.ResponseWriter, r *http.Request) {
-	enc := json.NewEncoder(w)
-
-	dec := json.NewDecoder(r.Body)
 
 	var v Some
-	dec.Decode(&v)
+	data.FromJSON(&v, r.Body)
 	str := []byte(v.Value)
 
 	newStr := []byte{}
@@ -24,7 +22,7 @@ func PostHandler(w http.ResponseWriter, r *http.Request) {
 		newStr = append(newStr, str[i])
 	}
 	v.Value = string(newStr)
-	enc.Encode(v)
+	data.ToJSON(v, w)
 	fmt.Printf("%+v\n", v)
 
 }

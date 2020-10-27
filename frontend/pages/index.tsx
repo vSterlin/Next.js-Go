@@ -11,10 +11,16 @@ const Center = styled.div`
  height: 100vh;
 `;
 
+const StyledH1 = styled.h1`
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 20px;
+`;
 export default function Home() {
 
   const [value, setValue] = useState('')
-
+  const [response, setResponse] = useState()
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(value);
@@ -25,11 +31,14 @@ export default function Home() {
         value
       }
     });
-    console.log(res.data)
+    setResponse(res.data.value)
   }
   
 
   return (
+    <>
+    {response && <StyledH1>{response}</StyledH1>}
+
     <Center>
 
     <form onSubmit={(e)=>onSubmit(e)}>
@@ -39,5 +48,6 @@ export default function Home() {
 
 </form>
 </Center>
+</>
   )
 }
