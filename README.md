@@ -1,0 +1,1 @@
+# Small example of Next.js working with Go server
